@@ -1,9 +1,9 @@
 {
   "name": "can-view-target",
-  "version": "3.0.0-pre.0",
+  "version": "3.0.0-pre.1",
   "description": "Fast cloning micro templates",
   "homepage": "http://canjs.com",
-    "repository": {
+  "repository": {
     "type": "git",
     "url": "git://github.com/canjs/can-view-target.git"
   },
