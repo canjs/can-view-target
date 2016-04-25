@@ -1,9 +1,11 @@
-/* jshint maxdepth:7*/
+/* jshint maxdepth:7 */
+/* jshint latedef:false */
 var childNodes = require('can-util/dom/child-nodes/child-nodes');
 var domAttr = require('can-util/dom/attr/attr');
 var each = require('can-util/js/each/each');
 var makeArray = require('can-util/js/make-array/make-array');
 var getDocument = require('can-util/dom/document/document');
+var domMutate = require('can-util/dom/mutate/mutate');
 
 // if an object or a function
 // convert into what it should look like
@@ -173,7 +175,7 @@ function processNode(node, paths, location, document){
 			getCallback().callbacks.push({
 				callback: function(){
 					var el = document.createTextNode("");
-					elements.replace([this], el);
+					domMutate.replaceChild.call(this.parentNode, el, this);
 					return node.apply(el,arguments );
 				}
 			});
