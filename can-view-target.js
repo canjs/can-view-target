@@ -6,6 +6,7 @@ var each = require('can-util/js/each/each');
 var makeArray = require('can-util/js/make-array/make-array');
 var getDocument = require('can-util/dom/document/document');
 var domMutate = require('can-util/dom/mutate/mutate');
+var namespace = require('can-util/namespace');
 
 // if an object or a function
 // convert into what it should look like
@@ -242,4 +243,5 @@ function makeTarget(nodes, doc){
 }
 makeTarget.keepsTextNodes = keepsTextNodes;
 
-module.exports = makeTarget;
+namespace.view = namespace.view || {};
+module.exports = namespace.view.target = makeTarget;
