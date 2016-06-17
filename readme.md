@@ -4,55 +4,53 @@
 
 Fast cloning micro templates
 
-## Usage
 
-### ES6 use
+- <code>[__can-view-target__ function](#can-view-target-function)</code>
+  - <code>[target(nodes)](#targetnodes)</code>
 
-With StealJS, you can import this module directly in a template that is autorendered:
+## API
+
+
+## <code>__can-view-target__ function</code>
+
+
+
+### <code>target(nodes)</code>
+
+
+Create a document fragment that can be cloned but have callbacks be
+called quickly on elements within the cloned fragment.
 
 ```js
-import plugin from 'can-view-target';
+var viewTarget = require("can-view-target");
+
+var target = viewTarget([
+	{
+		tag: "h1",
+		callbacks: [function(data){
+			this.className = data.className
+		}],
+		children: [
+			"Hello ",
+			function(){
+				this.nodeValue = data.message
+			}
+		]
+	},
+]);
+
+// target.clone -> <h1>|Hello||</h1>
+// target.paths -> path: [0], callbacks: [], children: {paths: [1], callbacks:[function(){}]}
+
+var frag = target.hydrate({className: "title", message: "World"});
+
+frag //-> <h1 class='title'>Hello World</h1>
 ```
 
-### CommonJS use
 
-Use `require` to load `can-view-target` and everything else
-needed to create a template that uses `can-view-target`:
-
-```js
-var plugin = require("can-view-target");
-```
-
-## AMD use
-
-Configure the `can` and `jquery` paths and the `can-view-target` package:
-
-```html
-<script src="require.js"></script>
-<script>
-	require.config({
-	    paths: {
-	        "jquery": "node_modules/jquery/dist/jquery",
-	        "can": "node_modules/canjs/dist/amd/can"
-	    },
-	    packages: [{
-		    	name: 'can-view-target',
-		    	location: 'node_modules/can-view-target/dist/amd',
-		    	main: 'lib/can-view-target'
-	    }]
-	});
-	require(["main-amd"], function(){});
-</script>
-```
-
-### Standalone use
-
-Load the `global` version of the plugin:
-
-```html
-<script src='./node_modules/can-view-target/dist/global/can-view-target.js'></script>
-```
-
+1. __nodes__ <code>{Array}</code>:
+  
+  
 ## Contributing
 
 ### Making a Build
