@@ -24,7 +24,7 @@
     "release:minor": "npm version minor && npm publish",
     "release:major": "npm version major && npm publish",
     "build": "node build.js",
-    "document": "documentjs",
+    "document": "bit-docs",
     "develop": "done-serve --static --develop --port 8080"
   },
   "main": "can-view-target",
@@ -53,7 +53,7 @@
     "can-util": "^3.0.0-pre.21"
   },
   "devDependencies": {
-    "documentjs": "^0.4.2",
+    "bit-docs": "0.0.6",
     "jshint": "^2.9.1",
     "cssify": "^0.6.0",
     "steal": "^0.16.0",
@@ -64,5 +64,22 @@
     "donejs-cli": "^0.8.0",
     "done-serve": "^0.2.0",
     "can-simple-dom": "^0.3.0"
+  },
+  "bit-docs": {
+    "dependencies": {
+      "bit-docs-glob-finder": "^0.0.5",
+      "bit-docs-dev": "^0.0.3",
+      "bit-docs-js": "^0.0.3",
+      "bit-docs-generate-readme": "^0.0.8"
+    },
+    "glob": {
+      "pattern": "**\/*.{js,md}",
+      "ignore": "node_modules\/**\/*"
+    },
+		"readme": {
+			"apis": ["can-view-target"]
+		},
+    "parent": "can-view-target"
   }
+
 }
