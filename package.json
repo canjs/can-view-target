@@ -1,6 +1,6 @@
 {
   "name": "can-view-target",
-  "version": "3.0.0-pre.2",
+  "version": "3.0.0-pre.3",
   "description": "Fast cloning micro templates",
   "homepage": "http://canjs.com",
   "repository": {
@@ -73,13 +73,14 @@
       "bit-docs-generate-readme": "^0.0.8"
     },
     "glob": {
-      "pattern": "**\/*.{js,md}",
-      "ignore": "node_modules\/**\/*"
+      "pattern": "**/*.{js,md}",
+      "ignore": "node_modules/**/*"
     },
-		"readme": {
-			"apis": ["can-view-target"]
-		},
+    "readme": {
+      "apis": [
+        "can-view-target"
+      ]
+    },
     "parent": "can-view-target"
   }
-
 }
