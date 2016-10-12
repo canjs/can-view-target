@@ -1,5 +1,6 @@
 @module {function} can-view-target
 @parent can-infrastructure
+@package ./package.json
 
 @signature `target(nodes)`
 
