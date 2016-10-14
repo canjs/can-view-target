@@ -106,7 +106,7 @@ test("paths should be run in reverse order (#966)", function(){
 		attributes: [function(){}],
 		children:  [
 			function(){
-				this.parentElement.insertBefore(document.createElement("div"),this.nextSibling);
+				this.parentNode.insertBefore(document.createElement("div"), this.nextSibling);
 			},
 			{
 				tag: "span",
