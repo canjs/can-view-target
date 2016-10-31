@@ -55,6 +55,8 @@ var processNodes = function(nodes, paths, location, document){
 
 			return clone.childNodes.length === 1 && works;
 		}
+
+		return works;
 	})(),
 	namespacesWork = typeof document !== "undefined" && !!document.createElementNS;
 
