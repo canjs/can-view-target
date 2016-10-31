@@ -41,11 +41,22 @@ var processNodes = function(nodes, paths, location, document){
 		// Clone an element containing a custom tag to see if the innerHTML is what we
 		// expect it to be, or if not it probably was created outside of the document's
 		// namespace.
-		var a = document.createElement('a');
-		a.innerHTML = "<xyz></xyz>";
-		var clone = a.cloneNode(true);
+		var el = document.createElement('a');
+		el.innerHTML = "<xyz></xyz>";
+		var clone = el.cloneNode(true);
+		var works = clone.innerHTML === "<xyz></xyz>";
 
-		return clone.innerHTML === "<xyz></xyz>";
+		if(works) {
+			// Cloning text nodes with dashes seems to create multiple nodes in IE11
+			// Since this is not what we expect we have to include detecting it here as well.
+			el = document.createDocumentFragment();
+			el.appendChild(document.createTextNode('foo-bar'));
+			clone = el.cloneNode(true);
+
+			return clone.childNodes.length === 1;
+		}
+
+		return works;
 	})(),
 	namespacesWork = typeof document !== "undefined" && !!document.createElementNS;
 
@@ -242,6 +253,7 @@ function makeTarget(nodes, doc){
 	};
 }
 makeTarget.keepsTextNodes = keepsTextNodes;
+makeTarget.cloneNode = cloneNode;
 
 namespace.view = namespace.view || {};
 module.exports = namespace.view.target = makeTarget;
