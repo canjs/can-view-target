@@ -152,3 +152,14 @@ test("renderToVirtualDOM", function(){
 	equal(out.firstChild.lastChild.nodeValue, "foo");
 
 });
+
+test('cloneNode works in IE11', function() {
+	var frag = document.createDocumentFragment();
+	var text = document.createTextNode('some-text');
+
+	frag.appendChild(text);
+
+	var clone = target.cloneNode(frag);
+
+	equal(clone.childNodes.length, 1);
+});
