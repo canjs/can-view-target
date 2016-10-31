@@ -47,13 +47,13 @@ var processNodes = function(nodes, paths, location, document){
 		var works = clone.innerHTML === "<xyz></xyz>";
 
 		if(works) {
-			// Cloning text nodes with dashes seems to create multiple notes in IE11
+			// Cloning text nodes with dashes seems to create multiple nodes in IE11
 			// Since this is not what we expect we have to include detecting it here as well.
 			el = document.createDocumentFragment();
 			el.appendChild(document.createTextNode('foo-bar'));
 			clone = el.cloneNode(true);
 
-			return clone.childNodes.length === 1 && works;
+			return clone.childNodes.length === 1;
 		}
 
 		return works;
