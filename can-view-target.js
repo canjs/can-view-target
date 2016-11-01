@@ -76,6 +76,7 @@ var cloneNode = clonesWork ?
 		return el.cloneNode(true);
 	} :
 	function(node){
+		var document = node.ownerDocument;
 		var copy;
 
 		if(node.nodeType === 1) {
@@ -97,10 +98,13 @@ var cloneNode = clonesWork ?
 			});
 		}
 
-		if(node.childNodes) {
-			each(node.childNodes, function(child){
+		if(node && node.firstChild) {
+			var child = node.firstChild;
+
+			while(child) {
 				copy.appendChild( cloneNode(child) );
-			});
+				child = child.nextSibling;
+			}
 		}
 
 		return copy;
