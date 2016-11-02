@@ -93,7 +93,7 @@ var cloneNode = clonesWork ?
 			var attributes = makeArray(node.attributes);
 			each(attributes, function (node) {
 				if(node && node.specified) {
-					domAttr.setAttribute(copy, node.nodeName, node.nodeValue);
+					domAttr.setAttribute(copy, node.nodeName || node.name, node.nodeValue || node.value);
 				}
 			});
 		}
