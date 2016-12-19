@@ -2,6 +2,7 @@
 var target = require('can-view-target');
 var simpleDom = require('can-simple-dom');
 var QUnit = require('steal-qunit');
+var MUTATION_OBSERVER = require('can-util/dom/mutation-observer/mutation-observer');
 
 QUnit.module("can-view-target");
 
@@ -156,10 +157,21 @@ test("renderToVirtualDOM", function(){
 test('cloneNode works in IE11', function() {
 	var frag = document.createDocumentFragment();
 	var text = document.createTextNode('some-text');
+	var MO = MUTATION_OBSERVER();
+	var observer;
 
 	frag.appendChild(text);
 
 	var clone = target.cloneNode(frag);
 
-	equal(clone.childNodes.length, 1);
+	equal(clone.childNodes.length, 1, 'cloneNode should work');
+
+	if (MO) {
+		observer = new MO(function(mutations) {});
+		observer.observe(document.documentElement, { childList: true, subtree: true });
+
+		clone = target.cloneNode(frag);
+
+		equal(clone.childNodes.length, 1, 'cloneNode should work after creating MutationObserver');
+	}
 });
