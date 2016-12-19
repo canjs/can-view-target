@@ -7,6 +7,7 @@ var makeArray = require('can-util/js/make-array/make-array');
 var getDocument = require('can-util/dom/document/document');
 var domMutate = require('can-util/dom/mutate/mutate');
 var namespace = require('can-namespace');
+var MUTATION_OBSERVER = require('can-util/dom/mutation-observer/mutation-observer');
 
 // if an object or a function
 // convert into what it should look like
@@ -45,13 +46,27 @@ var processNodes = function(nodes, paths, location, document){
 		el.innerHTML = "<xyz></xyz>";
 		var clone = el.cloneNode(true);
 		var works = clone.innerHTML === "<xyz></xyz>";
+		var MO, observer;
 
 		if(works) {
-			// Cloning text nodes with dashes seems to create multiple nodes in IE11
+			// Cloning text nodes with dashes seems to create multiple nodes in IE11 when
+			// MutationObservers of subtree modifications are used on the documentElement.
 			// Since this is not what we expect we have to include detecting it here as well.
 			el = document.createDocumentFragment();
 			el.appendChild(document.createTextNode('foo-bar'));
-			clone = el.cloneNode(true);
+
+			MO = MUTATION_OBSERVER();
+
+			if (MO) {
+				observer = new MO(function() {});
+				observer.observe(document.documentElement, { childList: true, subtree: true });
+
+				clone = el.cloneNode(true);
+
+				observer.disconnect();
+			} else {
+				clone = el.cloneNode(true);
+			}
 
 			return clone.childNodes.length === 1;
 		}
