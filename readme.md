@@ -1,5 +1,7 @@
 # can-view-target
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/canjs/can-view-target.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/canjs/can-view-target.png?branch=master)](https://travis-ci.org/canjs/can-view-target)
 
 Fast cloning micro templates
