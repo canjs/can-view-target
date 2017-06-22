@@ -32,7 +32,7 @@ var target = viewTarget([
 		}],
 		children: [
 			"Hello ",
-			function(){
+			function(data){
 				this.nodeValue = data.message
 			}
 		]
