@@ -95,7 +95,12 @@ var cloneNode = clonesWork ?
 		var copy;
 
 		if(node.nodeType === 1) {
-			copy = document.createElement(node.nodeName);
+			if(node.namespaceURI !== 'http://www.w3.org/1999/xhtml' && namespacesWork && document.createElementNS) {
+				copy = document.createElementNS(node.namespaceURI, node.nodeName);
+			}
+			else {
+				copy = document.createElement(node.nodeName);
+			}
 		} else if(node.nodeType === 3){
 			copy = document.createTextNode(node.nodeValue);
 		} else if(node.nodeType === 8) {
