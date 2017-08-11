@@ -1,72 +1,28 @@
 # can-view-target
 
-[![Build Status](https://travis-ci.org/canjs/can-view-target.png?branch=master)](https://travis-ci.org/canjs/can-view-target)
+[![Join the chat at https://gitter.im/canjs/canjs](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/canjs/canjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/canjs/can-view-target/blob/master/LICENSE.md)
+[![npm version](https://badge.fury.io/js/can-view-target.svg)](https://www.npmjs.com/package/can-view-target)
+[![Travis build status](https://travis-ci.org/canjs/can-view-target.svg?branch=master)](https://travis-ci.org/canjs/can-view-target)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/canjs/can-view-target?branch=master&svg=true)](https://ci.appveyor.com/project/matthewp/can-view-target)
+[![Coverage status](https://coveralls.io/repos/github/canjs/can-view-target/badge.svg?branch=master)](https://coveralls.io/github/canjs/can-view-target?branch=master)
+[![Greenkeeper badge](https://badges.greenkeeper.io/canjs/can-view-target.svg)](https://greenkeeper.io/)
 
-Fast cloning micro templates
+FAILED TO GET DESCRIPTION
 
+## Documentation
 
-- <code>[__can-view-target__ function](#can-view-target-function)</code>
-  - <code>[target(nodes)](#targetnodes)</code>
+Read the [API docs on CanJS.com](https://canjs.com/doc/can-view-target.html).
 
-## API
+## Changelog
 
+See the [latest releases on GitHub](https://github.com/canjs/can-view-target/releases).
 
-## <code>__can-view-target__ function</code>
-
-
-
-### <code>target(nodes)</code>
-
-
-Create a document fragment that can be cloned but have callbacks be
-called quickly on elements within the cloned fragment.
-
-```js
-var viewTarget = require("can-view-target");
-
-var target = viewTarget([
-	{
-		tag: "h1",
-		callbacks: [function(data){
-			this.className = data.className
-		}],
-		children: [
-			"Hello ",
-			function(data){
-				this.nodeValue = data.message
-			}
-		]
-	},
-]);
-
-// target.clone -> <h1>|Hello||</h1>
-// target.paths -> path: [0], callbacks: [], children: {paths: [1], callbacks:[function(){}]}
-
-var frag = target.hydrate({className: "title", message: "World"});
-
-frag //-> <h1 class='title'>Hello World</h1>
-```
-
-
-1. __nodes__ <code>{Array}</code>:
-  
-  
 ## Contributing
 
-### Making a Build
+The [contribution guide](https://github.com/canjs/can-view-target/blob/master/CONTRIBUTING.md) has information on getting help, reporting bugs, developing locally, and more.
 
-To make a build of the distributables into `dist/` in the cloned repository run
+## License
 
-```
-npm install
-node build
-```
+[MIT](https://github.com/canjs/can-view-target/blob/master/LICENSE.md)
 
-### Running the tests
-
-Tests can run in the browser by opening a webserver and visiting the `test.html` page.
-Automated tests that run the tests from the command line in Firefox can be run with
-
-```
-npm test
-```
