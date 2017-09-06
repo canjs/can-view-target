@@ -7,7 +7,7 @@ var makeArray = require('can-util/js/make-array/make-array');
 var getDocument = require('can-util/dom/document/document');
 var domMutate = require('can-util/dom/mutate/mutate');
 var namespace = require('can-namespace');
-var MUTATION_OBSERVER = require('can-util/dom/mutation-observer/mutation-observer');
+var MUTATION_OBSERVER = require('can-globals/mutation-observer/mutation-observer');
 
 // if an object or a function
 // convert into what it should look like

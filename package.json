@@ -33,6 +33,7 @@
     "donejs"
   ],
   "dependencies": {
+    "can-globals": "^0.1.0",
     "can-namespace": "1.0.0",
     "can-util": "^3.9.5"
   },
