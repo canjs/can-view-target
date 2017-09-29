@@ -33,9 +33,9 @@
     "donejs"
   ],
   "dependencies": {
-    "can-globals": "^0.1.0",
+    "can-globals": "^0.2.2",
     "can-namespace": "1.0.0",
-    "can-util": "^3.9.5"
+    "can-util": "^3.10.9"
   },
   "devDependencies": {
     "bit-docs": "0.0.7",
