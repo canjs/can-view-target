@@ -2,7 +2,7 @@
 var target = require('can-view-target');
 var simpleDom = require('can-simple-dom');
 var QUnit = require('steal-qunit');
-var MUTATION_OBSERVER = require('can-util/dom/mutation-observer/mutation-observer');
+var MUTATION_OBSERVER = require('can-globals/mutation-observer/mutation-observer');
 
 QUnit.module("can-view-target");
 
