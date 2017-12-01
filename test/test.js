@@ -2,7 +2,7 @@
 var target = require('can-view-target');
 var simpleDom = require('can-simple-dom');
 var QUnit = require('steal-qunit');
-var MUTATION_OBSERVER = require('can-util/dom/mutation-observer/mutation-observer');
+var MUTATION_OBSERVER = require('can-globals/mutation-observer/mutation-observer');
 
 QUnit.module("can-view-target");
 
@@ -174,4 +174,14 @@ test('cloneNode works in IE11', function() {
 
 		equal(clone.childNodes.length, 1, 'cloneNode should work after creating MutationObserver');
 	}
+});
+
+test('cloneNode keeps non-default element namespace', function() {
+	var frag = document.createDocumentFragment();
+	var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	frag.appendChild(svg);
+
+	var clone = target.cloneNode(frag);
+
+	equal(clone.firstChild.namespaceURI, 'http://www.w3.org/2000/svg', 'cloneNode should keep non-default element namespace');
 });
