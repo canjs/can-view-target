@@ -1,6 +1,6 @@
 {
   "name": "can-view-target",
-  "version": "4.0.0-pre.0",
+  "version": "4.0.0-pre.1",
   "description": "Fast cloning micro templates",
   "homepage": "http://canjs.com",
   "repository": {
@@ -13,7 +13,7 @@
     "url": "http://bitovi.com"
   },
   "scripts": {
-		"preversion": "npm test",
+    "preversion": "npm test",
     "postpublish": "git push --tags && git push",
     "testee": "testee test/test.html --browsers firefox",
     "test": "npm run detect-cycle && npm run jshint && npm run testee",
