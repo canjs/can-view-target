@@ -1,11 +1,7 @@
 /* jshint maxdepth:7 */
 /* jshint latedef:false */
-var childNodes = require('can-util/dom/child-nodes/child-nodes');
-var domAttr = require('can-util/dom/attr/attr');
-var each = require('can-util/js/each/each');
-var makeArray = require('can-util/js/make-array/make-array');
 var getDocument = require('can-globals/document/document');
-var domMutate = require('can-util/dom/mutate/mutate');
+var domMutate = require('can-dom-mutate/node');
 var namespace = require('can-namespace');
 var MUTATION_OBSERVER = require('can-globals/mutation-observer/mutation-observer');
 
@@ -33,7 +29,7 @@ var processNodes = function(nodes, paths, location, document){
 
 		var cloned  = testFrag.cloneNode(true);
 
-		return childNodes(cloned.firstChild).length === 2;
+		return cloned.firstChild.childNodes.length === 2;
 	})(),
 	clonesWork = typeof document !== "undefined" && (function(){
 		// Since html5shiv is required to support custom elements, assume cloning
@@ -110,12 +106,13 @@ var cloneNode = clonesWork ?
 		}
 
 		if(node.attributes) {
-			var attributes = makeArray(node.attributes);
-			each(attributes, function (node) {
-				if(node && node.specified) {
-					domAttr.setAttribute(copy, node.nodeName || node.name, node.nodeValue || node.value);
+			var attributes = node.attributes;
+			for (var i = 0; i < attributes.length; i++) {
+				var attribute = attributes[i];
+				if (attribute && attribute.specified) {
+					domMutate.setAttribute.call(copy, attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
 				}
-			});
+			}
 		}
 
 		if(node && node.firstChild) {
@@ -165,7 +162,7 @@ function processNode(node, paths, location, document){
 							callback:  value
 						});
 					} else  {
-						domAttr.setAttribute(el, attrName, value);
+						domMutate.setAttribute.call(el, attrName, value);
 					}
 				}
 			}
@@ -264,7 +261,10 @@ function makeTarget(nodes, doc){
 		clone: frag,
 		hydrate: function(){
 			var cloned = cloneNode(this.clone);
-			var args = makeArray(arguments);
+			var args = [];
+			for (var a = 0, ref = args.length = arguments.length; a < ref; a++) {
+				args[a] = arguments[a];
+			} // see https://jsperf.com/nodelist-to-array
 
 			var callbacks = [];
 			for(var i = 0; i < paths.length; i++) {
