@@ -8,22 +8,22 @@
 Create a document fragment that can be cloned but have callbacks be
 called quickly on elements within the cloned fragment.
 
-```javascript
+```js
 import viewTarget from "can-view-target";
 
 const target = viewTarget([
-  {
-    tag: "h1",
-    callbacks: [function(data){
-      this.className = data.className
-    }],
-    children: [
-      "Hello ",
-      function(data){
-        this.nodeValue = data.message
-      }
-    ]
-  },
+	{
+		tag: "h1",
+		callbacks: [function(data){
+			this.className = data.className
+		}],
+		children: [
+			"Hello ",
+			function(data){
+				this.nodeValue = data.message
+			}
+		]
+	},
 ]);
 
 // target.clone -> <h1>|Hello||</h1>
