@@ -1,3 +1,4 @@
+"use strict";
 /* jshint maxdepth:7 */
 /* jshint latedef:false */
 var getDocument = require('can-globals/document/document');
