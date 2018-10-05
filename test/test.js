@@ -185,3 +185,17 @@ test('cloneNode keeps non-default element namespace', function() {
 
 	equal(clone.firstChild.namespaceURI, 'http://www.w3.org/2000/svg', 'cloneNode should keep non-default element namespace');
 });
+
+QUnit.test("SVG namespaceURI", function() {
+	var data = target([{
+		tag: "svg",
+		attrs: {
+			"xmlns" : {
+				value: "http://www.w3.org/2000/svg", 
+				namespaceURI: "http://www.w3.org/2000/xmlns/"
+			}
+		}
+	}]);
+	var frag = data.hydrate();
+	QUnit.equal(frag.firstChild.getAttributeNode("xmlns").namespaceURI, 'http://www.w3.org/2000/xmlns/');
+})
