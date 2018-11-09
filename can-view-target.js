@@ -162,7 +162,9 @@ function processNode(node, paths, location, document){
 						getCallback().callbacks.push({
 							callback:  value
 						});
-					} else  {
+					} else if (value !== null && typeof value === "object" && value.namespaceURI) {
+						el.setAttributeNS(value.namespaceURI,attrName,value.value);
+					} else {
 						domMutate.setAttribute.call(el, attrName, value);
 					}
 				}
