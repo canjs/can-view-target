@@ -114,6 +114,23 @@ var cloneNode = clonesWork ?
 					domMutate.setAttribute.call(copy, attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
 				}
 			}
+			
+			if (copy.attributes) {
+				var copyAttributes = copy.attributes;
+				for (var idx = 0; idx < copyAttributes.length; idx++) {
+					var copyAttribute = copyAttributes[idx];
+					if(copyAttribute && copyAttribute.specified) {
+						var nodeAttrNSURI = node.getAttributeNode(copyAttribute.name).namespaceURI;
+						var copyAttrNSURI = copy.getAttributeNode(copyAttribute.name).namespaceURI;
+						if (nodeAttrNSURI && !copyAttrNSURI ) {
+							//IE11 when using setAttributeNS, it adds new attribute instead of changing an existing one 
+							//We need to remove it before set it againg
+							copy.removeAttribute(copyAttribute.name);
+							copy.setAttributeNS(nodeAttrNSURI, copyAttribute.name, copyAttribute.value);
+						}
+					}
+				}
+			}
 		}
 
 		if(node && node.firstChild) {
