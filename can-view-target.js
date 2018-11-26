@@ -112,11 +112,12 @@ var cloneNode = clonesWork ?
 				var attribute = attributes[i];
 				if (attribute && attribute.specified) {
 					// If the attribute has a namespace set the namespace 
-					// otherwise t will be set to null
+					// otherwise it will be set to null
 					if (attribute.namespaceURI) {
 						copy.setAttributeNS(attribute.namespaceURI, attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
+					} else {
+						node.setAttribute.call(copy, attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
 					}
-					node.setAttribute.call(copy, attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
 				}
 			}
 		}
