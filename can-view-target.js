@@ -111,7 +111,13 @@ var cloneNode = clonesWork ?
 			for (var i = 0; i < attributes.length; i++) {
 				var attribute = attributes[i];
 				if (attribute && attribute.specified) {
-					domMutate.setAttribute.call(copy, attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
+					// If the attribute has a namespace set the namespace 
+					// otherwise it will be set to null
+					if (attribute.namespaceURI) {
+						copy.setAttributeNS(attribute.namespaceURI, attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
+					} else {
+						copy.setAttribute(attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
+					}
 				}
 			}
 		}
