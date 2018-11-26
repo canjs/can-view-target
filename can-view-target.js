@@ -116,7 +116,7 @@ var cloneNode = clonesWork ?
 					if (attribute.namespaceURI) {
 						copy.setAttributeNS(attribute.namespaceURI, attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
 					} else {
-						node.setAttribute.call(copy, attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
+						copy.setAttribute(attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
 					}
 				}
 			}
