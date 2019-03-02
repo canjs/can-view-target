@@ -5,8 +5,6 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/canjs/can-view-target/blob/master/LICENSE.md)
 [![npm version](https://badge.fury.io/js/can-view-target.svg)](https://www.npmjs.com/package/can-view-target)
 [![Travis build status](https://travis-ci.org/canjs/can-view-target.svg?branch=master)](https://travis-ci.org/canjs/can-view-target)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/canjs/can-view-target?branch=master&svg=true)](https://ci.appveyor.com/project/matthewp/can-view-target)
-[![Coverage status](https://coveralls.io/repos/github/canjs/can-view-target/badge.svg?branch=master)](https://coveralls.io/github/canjs/can-view-target?branch=master)
 [![Greenkeeper badge](https://badges.greenkeeper.io/canjs/can-view-target.svg)](https://greenkeeper.io/)
 
 Fast cloning micro templates
