@@ -197,5 +197,5 @@ QUnit.test("SVG namespaceURI", function() {
 		}
 	}]);
 	var frag = data.hydrate();
-	QUnit.equal(frag.firstChild.getAttributeNode("xmlns").namespaceURI, 'http://www.w3.org/2000/xmlns/');
+	assert.equal(frag.firstChild.getAttributeNode("xmlns").namespaceURI, 'http://www.w3.org/2000/xmlns/');
 })
