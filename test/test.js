@@ -6,18 +6,18 @@ var MUTATION_OBSERVER = require('can-globals/mutation-observer/mutation-observer
 
 QUnit.module("can-view-target");
 
-test("basics", function(){
+QUnit.test("basics", function(assert) {
 
 	// "<h1 class='foo {{#selected}}selected{{/selected}}' ><span>Hello {{message}}!</span></h1>"
 	var classCallback = function( ){
-		equal(this.nodeName.toLowerCase(), "h1", "class on the right element");
+		assert.equal(this.nodeName.toLowerCase(), "h1", "class on the right element");
 		this.className = "selected";
 	},
 		attributesCallback = function(){
-			equal(this.nodeName.toLowerCase(), "h1", "attributes on the right element");
+			assert.equal(this.nodeName.toLowerCase(), "h1", "attributes on the right element");
 		},
 		textNodeCallback = function( ){
-			equal(this.nodeType, 3, "got a text node");
+			assert.equal(this.nodeType, 3, "got a text node");
 			this.nodeValue = "World";
 		};
 
@@ -40,17 +40,17 @@ test("basics", function(){
 		}]
 	}]);
 
-	equal( data.clone.childNodes.length, 1, "there is one child");
+	assert.equal( data.clone.childNodes.length, 1, "there is one child");
 
 	var h1 = data.clone.childNodes[0];
-	equal( h1.nodeName.toLowerCase(), "h1", "there is one h1");
-	equal( h1.id, "myh1", "the h1 has the right id");
+	assert.equal( h1.nodeName.toLowerCase(), "h1", "there is one h1");
+	assert.equal( h1.id, "myh1", "the h1 has the right id");
 
-	equal( h1.childNodes.length, 1, "the h1 has span");
+	assert.equal( h1.childNodes.length, 1, "the h1 has span");
 
-	equal( h1.childNodes[0].childNodes.length, 3, "the span has 3 children");
+	assert.equal( h1.childNodes[0].childNodes.length, 3, "the span has 3 children");
 
-	deepEqual( data.paths,
+	assert.deepEqual( data.paths,
 		[{
 			path: [0],
 			callbacks: [
@@ -68,39 +68,39 @@ test("basics", function(){
 	var result = data.hydrate();
 
 	var newH1 = result.childNodes[0];
-	equal(newH1.className, "selected", "got selected class name");
-	equal(newH1.innerHTML.toLowerCase(), "<span>hello world!</span>");
+	assert.equal(newH1.className, "selected", "got selected class name");
+	assert.equal(newH1.innerHTML.toLowerCase(), "<span>hello world!</span>");
 
 });
 
 
-test("replacing items", function(){
+QUnit.test("replacing items", function(assert) {
 	var data = target([
 		function(){
 			this.parentNode.insertBefore(document.createTextNode("inserted"), this.nextSibling);
 		},
 		"hi",
 		function(){
-			equal(this.previousSibling.nodeValue, "hi", "previous is as expected");
+			assert.equal(this.previousSibling.nodeValue, "hi", "previous is as expected");
 		}]);
 
 	data.hydrate();
 });
 
-test("comments", function(){
+QUnit.test("comments", function(assert) {
 
 	var data = target([
 		{ tag: "h1" },
 		{comment: "foo bar"}
 	]);
 	var node = data.clone.childNodes[1];
-	equal(node.nodeValue, "foo bar", "node value is right");
-	equal(node.nodeType, 8, "node is a comment");
+	assert.equal(node.nodeValue, "foo bar", "node value is right");
+	assert.equal(node.nodeType, 8, "node is a comment");
 
 });
 
 
-test("paths should be run in reverse order (#966)", function(){
+QUnit.test("paths should be run in reverse order (#966)", function(assert) {
 
 	var data = target([{
 		tag: "h1",
@@ -112,7 +112,7 @@ test("paths should be run in reverse order (#966)", function(){
 			{
 				tag: "span",
 				children: [function(){
-					equal(this.nodeType,3, "got an element");
+					assert.equal(this.nodeType,3, "got an element");
 				}]
 			}
 		]
@@ -120,7 +120,7 @@ test("paths should be run in reverse order (#966)", function(){
 	data.hydrate();
 });
 
-test("renderToVirtualDOM", function(){
+QUnit.test("renderToVirtualDOM", function(assert) {
 
 	var simpleDocument = new simpleDom.Document();
 
@@ -147,14 +147,14 @@ test("renderToVirtualDOM", function(){
 
 	var out = outerData.hydrate({foo: true});
 
-	equal(out.firstChild.nodeName, "H1");
+	assert.equal(out.firstChild.nodeName, "H1");
 
-	equal(out.firstChild.firstChild.nodeName, "SPAN");
-	equal(out.firstChild.lastChild.nodeValue, "foo");
+	assert.equal(out.firstChild.firstChild.nodeName, "SPAN");
+	assert.equal(out.firstChild.lastChild.nodeValue, "foo");
 
 });
 
-test('cloneNode works in IE11', function() {
+QUnit.test('cloneNode works in IE11', function(assert) {
 	var frag = document.createDocumentFragment();
 	var text = document.createTextNode('some-text');
 	var MO = MUTATION_OBSERVER();
@@ -164,7 +164,7 @@ test('cloneNode works in IE11', function() {
 
 	var clone = target.cloneNode(frag);
 
-	equal(clone.childNodes.length, 1, 'cloneNode should work');
+	assert.equal(clone.childNodes.length, 1, 'cloneNode should work');
 
 	if (MO) {
 		observer = new MO(function(mutations) {});
@@ -172,21 +172,21 @@ test('cloneNode works in IE11', function() {
 
 		clone = target.cloneNode(frag);
 
-		equal(clone.childNodes.length, 1, 'cloneNode should work after creating MutationObserver');
+		assert.equal(clone.childNodes.length, 1, 'cloneNode should work after creating MutationObserver');
 	}
 });
 
-test('cloneNode keeps non-default element namespace', function() {
+QUnit.test('cloneNode keeps non-default element namespace', function(assert) {
 	var frag = document.createDocumentFragment();
 	var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 	frag.appendChild(svg);
 
 	var clone = target.cloneNode(frag);
 
-	equal(clone.firstChild.namespaceURI, 'http://www.w3.org/2000/svg', 'cloneNode should keep non-default element namespace');
+	assert.equal(clone.firstChild.namespaceURI, 'http://www.w3.org/2000/svg', 'cloneNode should keep non-default element namespace');
 });
 
-QUnit.test("SVG namespaceURI", function() {
+QUnit.test("SVG namespaceURI", function(assert) {
 	var data = target([{
 		tag: "svg",
 		attrs: {
