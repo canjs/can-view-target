@@ -4,6 +4,7 @@
 var getDocument = require('can-globals/document/document');
 var domMutate = require('can-dom-mutate/node');
 var namespace = require('can-namespace');
+var MUTATION_OBSERVER = require('can-globals/mutation-observer/mutation-observer');
 
 // if an object or a function
 // convert into what it should look like
@@ -31,6 +32,44 @@ var processNodes = function(nodes, paths, location, document){
 
 		return cloned.firstChild.childNodes.length === 2;
 	})(),
+	clonesWork = typeof document !== "undefined" && (function(){
+		// Since html5shiv is required to support custom elements, assume cloning
+		// works in any browser that doesn't have html5shiv
+
+		// Clone an element containing a custom tag to see if the innerHTML is what we
+		// expect it to be, or if not it probably was created outside of the document's
+		// namespace.
+		var el = document.createElement('a');
+		el.innerHTML = "<xyz></xyz>";
+		var clone = el.cloneNode(true);
+		var works = clone.innerHTML === "<xyz></xyz>";
+		var MO, observer;
+
+		if(works) {
+			// Cloning text nodes with dashes seems to create multiple nodes in IE11 when
+			// MutationObservers of subtree modifications are used on the documentElement.
+			// Since this is not what we expect we have to include detecting it here as well.
+			el = document.createDocumentFragment();
+			el.appendChild(document.createTextNode('foo-bar'));
+
+			MO = MUTATION_OBSERVER();
+
+			if (MO) {
+				observer = new MO(function() {});
+				observer.observe(document.documentElement, { childList: true, subtree: true });
+
+				clone = el.cloneNode(true);
+
+				observer.disconnect();
+			} else {
+				clone = el.cloneNode(true);
+			}
+
+			return clone.childNodes.length === 1;
+		}
+
+		return works;
+	})(),
 	namespacesWork = typeof document !== "undefined" && !!document.createElementNS;
 
 /**
@@ -44,9 +83,56 @@ var processNodes = function(nodes, paths, location, document){
  * @param {DocumentFragment} frag A document fragment to clone
  * @return {DocumentFragment} a new fragment that is a clone of the provided argument
  */
-var cloneNode = function(el){
-	return el.cloneNode(true);
-};
+var cloneNode = clonesWork ?
+	function(el){
+		return el.cloneNode(true);
+	} :
+	function(node){
+		var document = node.ownerDocument;
+		var copy;
+
+		if(node.nodeType === 1) {
+			if(node.namespaceURI !== 'http://www.w3.org/1999/xhtml' && namespacesWork && document.createElementNS) {
+				copy = document.createElementNS(node.namespaceURI, node.nodeName);
+			}
+			else {
+				copy = document.createElement(node.nodeName);
+			}
+		} else if(node.nodeType === 3){
+			copy = document.createTextNode(node.nodeValue);
+		} else if(node.nodeType === 8) {
+			copy = document.createComment(node.nodeValue);
+		} else if(node.nodeType === 11) {
+			copy = document.createDocumentFragment();
+		}
+
+		if(node.attributes) {
+			var attributes = node.attributes;
+			for (var i = 0; i < attributes.length; i++) {
+				var attribute = attributes[i];
+				if (attribute && attribute.specified) {
+					// If the attribute has a namespace set the namespace 
+					// otherwise it will be set to null
+					if (attribute.namespaceURI) {
+						copy.setAttributeNS(attribute.namespaceURI, attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
+					} else {
+						copy.setAttribute(attribute.nodeName || attribute.name, attribute.nodeValue || attribute.value);
+					}
+				}
+			}
+		}
+
+		if(node && node.firstChild) {
+			var child = node.firstChild;
+
+			while(child) {
+				copy.appendChild( cloneNode(child) );
+				child = child.nextSibling;
+			}
+		}
+
+		return copy;
+	};
 
 function processNode(node, paths, location, document){
 	var callback,
