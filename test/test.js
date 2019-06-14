@@ -88,15 +88,17 @@ QUnit.test("replacing items", function(assert) {
 });
 
 QUnit.test("comments", function(assert) {
-
+	function foo(el) { el.nodeValue = "val"; }
 	var data = target([
 		{ tag: "h1" },
-		{comment: "foo bar"}
+		{comment: "foo bar"},
+		{comment: "bax", callbacks: [foo]}
 	]);
 	var node = data.clone.childNodes[1];
 	assert.equal(node.nodeValue, "foo bar", "node value is right");
 	assert.equal(node.nodeType, 8, "node is a comment");
-
+	assert.deepEqual(data.paths[0].path, [2], "node path is right");
+	assert.deepEqual(data.paths[0].callbacks, [{callback: foo}], "node callback is right");
 });
 
 
