@@ -194,7 +194,7 @@ function processNode(node, paths, location, document){
 			el = document.createComment(node.comment);
 
 			if(node.callbacks) {
-				for(i = 0, len = node.attributes.length; i < len; i++ ) {
+				for(i = 0, len = node.callbacks.length; i < len; i++ ) {
 					getCallback().callbacks.push({callback: node.callbacks[i]});
 				}
 			}
