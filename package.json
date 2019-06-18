@@ -38,7 +38,7 @@
   "devDependencies": {
     "can-simple-dom": "^1.0.2",
     "detect-cyclic-packages": "^1.1.0",
-    "donejs-cli": "^0.9.5",
+    "donejs-cli": "^3.2.1",
     "generator-donejs": "^1.0.7",
     "jshint": "^2.9.1",
     "steal": "^1.0.1",
